@@ -1,0 +1,22 @@
+package com.drools.five.drl
+import com.drools.version.five.pojo.Message
+
+rule "HelloWord"
+	no-loop true
+	when
+		$msg : Message(status == Message.HELLO, $message : message)
+	then
+		System.out.println( $message );
+		System.out.println( "hahaha" );
+		$msg.setMessage("Good Bye");
+		$msg.setStatus(Message.GOODBYE);
+		update($msg);
+end
+
+rule "GoodBye"
+	when
+		$msg : Message(status == Message.GOODBYE, info != null)
+	then
+		System.out.println( "hahaha" );
+		$msg.setMessage("Hello World");
+end
