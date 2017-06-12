@@ -1,0 +1,73 @@
+package com.yy.crud
+import com.drools.version.six.my.rules.Curd.User
+
+/*
+	salience 该属性的作用是通过一个数字来确认规则执行的优先级， 数字越大， 执行越靠前
+	如果两个数字一样大，从上到下执行
+	insert/insertLogical 一个对象  如果判断条件为eval(true) 的不会重新执行, 只有有条件的才会执行
+	update 更新当前规则
+	retract 删除当前规则
+	
+*/
+
+rule "crud1"
+	salience  1
+    when
+        eval( true )
+    then
+	   User us = new User();
+       us.setName("张三");
+       us.setMail("zhangsan@mail.com");
+       us.setAge(20);
+       insertLogical(us);
+       System.out.println("salience  1");
+       
+end
+
+
+rule "crud3"
+	salience  2
+    when
+        eval( true )
+    then
+       System.out.println("salience  3");
+       
+end
+
+
+rule "crud2"
+	salience 2
+	when
+		$user : User( name == "李四" )
+	then
+		System.out.println("salience  2");
+		
+end
+
+
+rule "crud4"
+	salience  3
+    when
+        eval( true )
+    then
+       System.out.println("salience  4");
+end
+
+rule "crud5"
+	salience 2
+	when
+		$user : User( name == "张三" )
+	then
+		$user.setName("李四");
+		update($user);
+		System.out.println("salience  5");
+end
+
+rule "crud6"
+	salience 2
+	when
+		$user : User( name == "张三" )
+	then
+		retract($user);
+		System.out.println("salience  6");
+end

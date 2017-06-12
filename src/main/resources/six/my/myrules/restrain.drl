@@ -1,0 +1,46 @@
+package com.yy.pojo.restrain;
+import com.drools.version.six.my.rules.Restrain.RestrainPojo;
+/*
+	drools 约束连接
+	rule   名称不能重复
+	drools 中的LHS( 判断条件中 ) , 和&& 作用一样  不能使用and
+	drools 中的LHS( 判断条件中 ) || 表示 或  不能使用 or
+	drools 实体类中的属性是私有private 在drl文件中获取不到
+	drools 文件中package import 结尾可以不用 ";" 结尾  then中写的java代码必须以 ";" 结尾
+	
+*/
+rule "restrain1"
+	when
+		$pojo : RestrainPojo( age > 20, name == '张三')
+	then
+		System.out.println( $pojo.name );
+		System.out.println( $pojo.age );
+		System.out.println();
+end
+
+rule "restrai2"
+	when
+		$pojo : RestrainPojo( age > 20 && name == "张三" )
+	then
+		System.out.println( $pojo.name );
+		System.out.println( $pojo.age );
+		System.out.println();
+end
+
+rule "restrain3"
+	when
+		$pojo : RestrainPojo( age > 80 || name == "zhangsan" )
+	then
+		System.out.println( $pojo.name );
+		System.out.println( $pojo.age );
+		System.out.println();
+end
+
+rule "restrain4"
+	when
+		$pojo : RestrainPojo( age > 20 || name == "张三" )
+	then
+		System.out.println( $pojo.name );
+		System.out.println( $pojo.age );
+		System.out.println();
+end

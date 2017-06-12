@@ -1,0 +1,97 @@
+package com.yy.property
+import com.drools.version.six.my.rules.Property.PropertyPojo
+
+/*
+	salience 作用是用来设置规则执行的优先级，salience 属性的值是一个数字，数字越大执行优先级越高，同时它的值可以是一个负数
+	no-loop 符合条件执行一次  后续的条件满足不会执行
+	date-effective 系统时间  >= 设置的时间才会执行 默认格式"dd-MM-yyyy" 月份 一月到十二月 超过12月出错 ("13-六月-2017")
+	date-expires 系统时间 < 设置的时间
+	enabled 是否执行引擎 默认true执行 false不执行
+	activation-group 若干规则划分为一个组，组里面执行一个规则，剩下的不执行
+*/
+
+//salience 执行顺序
+rule "salience sort1"
+	salience 1
+	when
+		eval( true )
+	then
+		System.out.println("salience sort1");
+end 
+
+rule "salience sort2"
+	salience 2
+	when
+		eval( true )
+	then
+		System.out.println("salience sort2");
+end
+
+//no-loop 符合条件执行一次  后续的条件满足不会执行
+rule "no-loop 1"
+	salience 2
+	no-loop true
+	when
+		$pojo : PropertyPojo( name == "张三" )
+	then
+		update($pojo);
+		System.out.println("no-loop 1" + $pojo.getName());
+end
+
+rule "no-loop 2"
+	salience 1
+	when
+		eval( true )
+	then
+		PropertyPojo pojo = new PropertyPojo();
+		pojo.setName("张三");
+		insert(pojo);
+		System.out.println("no-loop 2" + pojo.getName());
+end
+
+//date-effective 系统时间  >= 设置的时间才会执行 默认格式"dd-MM-yyyy" 月份 一月到十二月 超过12月出错 ("13-六月-2017") 
+rule "date-dffective"
+	salience 1
+	date-effective "2017-06-12"
+	when
+		eval( true )
+	then
+		System.out.println("date-dffective");
+end
+
+//date-expires 系统时间 < 设置的时间
+rule "date-expires"	
+	date-expires "2017-06-13"
+	when
+		eval( true )
+	then
+		System.out.println("date-expires");
+end
+
+//enabled 是否执行引擎 默认true执行 false不执行
+rule "enabled"
+	enabled false
+	when
+		eval( true )
+	then
+		System.out.println("enabled");
+end
+
+//activation-group 若干规则划分为一个组，组里面执行一个规则，剩下的不执行
+rule "activation-group 1"
+	salience 1
+	activation-group "activation"
+	when
+		eval( true )
+	then
+		System.out.println("activation-group 1");
+end
+
+rule "activation-group 2"
+	salience 2
+	activation-group "activation"
+	when
+		eval( true )
+	then
+		System.out.println("activation-group 2");
+end

@@ -1,0 +1,68 @@
+package com.yy.operation;
+import com.drools.version.six.my.rules.Operation.OperationPojo;
+
+/*
+	drools 12种比较操作符
+	>、 >=、 <、 <=、 = =、 !=、 in、 not in、 memberOf、 not memberOf、 matches、 not matches
+	
+	global 定义的全局变量 在java中使用kiesession赋值
+*/
+
+global String [] arr;
+
+
+rule "operation1"
+    when
+    	$pojo : OperationPojo( age > 20, name == "李四" )
+    then
+		System.out.println( $pojo.name );
+		System.out.println( $pojo.age );
+		System.out.println(  );
+end
+
+// 判断 是否在 ...里面
+rule "operation2"
+    when
+    	$pojo : OperationPojo( name in ( "张三", "李四", "王五" ) )
+    then
+    	System.out.println( $pojo.name );
+    	System.out.println( $pojo.age );
+    	System.out.println(  );
+end
+
+rule "operation3"
+    when
+    	$pojo : OperationPojo( name not in ( "张三", "李四", "王五" ) )
+    then
+    	System.out.println( $pojo.name );
+    	System.out.println( $pojo.age );
+    	System.out.println(  );
+end
+
+//正则表达式匹配
+rule "operation4"
+	when
+		$pojo : OperationPojo( name matches "赵.*" )
+	then
+		System.out.println( $pojo.name );
+    	System.out.println( $pojo.age );
+    	System.out.println(  );
+end
+
+rule "operation5"
+	when
+		$pojo : OperationPojo( name not matches "赵.*" )		
+	then
+		System.out.println( $pojo.name );
+    	System.out.println( $pojo.age );
+    	System.out.println(  );
+end
+
+rule "operation6"
+	when
+		pojo : OperationPojo( name memberOf arr )
+	then
+		System.out.println( pojo.name );
+    	System.out.println( pojo.age );
+    	System.out.println(  );
+end
