@@ -1,6 +1,6 @@
 package com.sample
  
-import com.drools.version.five.pojo.DroolsTest.Message;
+import com.drools.version.six.demo.DroolsTest.Message;
  
 rule "Hello World"
     when

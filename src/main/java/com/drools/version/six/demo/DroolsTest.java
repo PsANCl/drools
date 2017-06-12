@@ -1,4 +1,4 @@
-package com.drools.version.five.pojo;
+package com.drools.version.six.demo;
 
 import org.junit.Test;
 import org.kie.api.KieServices;
